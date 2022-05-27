@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+      
+        body{
+            background-color: rgb(17, 17, 45);
+        }
+       #head{
+           color: white;
+           text-align: center;
+       }
+       #movies{
+            height: 600px ;
+            width: 100%;
+            border-top: none;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-around;
+        }
+        #dibba{
+            height: 300px;
+            width: 15%;
+            border: 1px solid white;
+            color: white;
+            border-radius: 5px;
+            margin-top: 3%;
+        }
+        #poster{
+            height: 60%;
+            width: 100%;
+            border-radius: 5px;
+           
+        }
+    </style>
+</head>
+<body>
+   <h1 id="head">Trending Movies 2022</h1>
+   <div id="movies">
+     
+   </div>
+</body>
+</html>
+<script>
+    
+   async function getdata(){
+        let url=`https://api.themoviedb.org/4/list/1?api_key=6e9ed164a90cc85bb2201839fb32b955`
+
+         try{
+        let res= await fetch(url)
+     
+       let data= await res.json()
+       console.log(data.results)
+
+       appendmovies(data.results)
+         }
+         catch(error){
+             console.log(error)
+         }
+    }
+
+  getdata()
+   
+
+  function appendmovies(movies){
+      document.getElementById("movies").innerHTML=null
+      
+      movies.forEach(function(el){
+       let dibba=document.createElement("div")
+         dibba.setAttribute("id","dibba")
+
+         let img=document.createElement("img")
+         img.src=el.backdrop_path
+
+         img.setAttribute("id","poster")
+        let p=document.createElement("p")
+        p.innerText=el.title
+        p.style.textAlign="center"
+        
+        let release=document.createElement("p")
+        release.innerText=el.release_date
+        release.style.textAlign="center"
+        dibba.append(img,p,release)
+        document.getElementById("movies").append(dibba)
+      })
+
+  }
+</script>

@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        input{
+            width: 200px;
+        }
+        #movies{
+            height: 600px ;
+            width: 100%;
+            border-top: none;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-around;
+        }
+        body{
+            background-color: rgb(17, 17, 45);
+        }
+        #navbar{
+            width: 100%;
+            height: 100px;
+            border: 1px solid white;
+            border-radius: 5px;
+        }
+        #hotstr{
+            height: 100%;
+            width: 10%;
+            border-radius: 5px;
+        }
+        #query{
+            width: 40%;
+            height: 30px;
+            position: relative;
+            bottom: 40px;
+            left: 100px;
+        }
+        #dibba{
+            height: 300px;
+            width: 15%;
+            border: 1px solid white;
+            color: white;
+            border-radius: 5px;
+            margin-top: 3%;
+        }
+        #poster{
+            height: 60%;
+            width: 100%;
+            border-radius: 5px;
+           
+        }
+    </style>
+</head>
+<body>
+    <div id="navbar"> 
+    <img id="hotstr" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS1pQFUJVE4Lx1iXJFVPg1eFEWgXkN0TFGtdg&usqp=CAU">
+    <input oninput="debouncefunction(main,1000)" type="text" id="query" placeholder="search">
+    </div>
+   
+
+    <div id="movies">
+
+    </div>
+</body> 
+</html>
+<script>
+   var id
+  async function searchmovies(q){
+      try{
+      let url=`http://www.omdbapi.com/?s=${q}s&apikey=6a4e5c70&` // we are geting the api movie data
+
+      let res = await fetch(url)  // fetching  the data in res
+
+      let data =await res.json() // res.json colect the data , await will help to collect data from promises
+
+      //console.log(data)
+
+      return data.Search   // the data ia returning 
+      }
+      catch(error){  // if there is some error the catch function is called
+          console.log(error)
+      }
+
+  }
+
+  function appendmovies(movies){
+      document.getElementById("movies").innerHTML=null
+      if(movies==undefined){
+          return false;
+      }
+      movies.forEach(function(el){
+       let dibba=document.createElement("div")
+         dibba.setAttribute("id","dibba")
+         let img=document.createElement("img")
+         img.src=el.Poster
+         img.setAttribute("id","poster")
+        let p=document.createElement("p")
+        p.innerText=el.Title
+        p.style.textAlign="center"
+        dibba.append(img,p)
+        document.getElementById("movies").append(dibba)
+      })
+
+  }
+
+    async function main(){
+
+        let query=document.getElementById("query").value; //whatever data we type we going to collect on query
+        console.log(query)
+        let response=searchmovies(query) //here we calling the searchmovies function and whatever data return we going to collect in the responses. async funciton,no matter what,return promise. 
+       
+        let data = await response  // using await because in response promise is store so we made it in data format
+        
+        console.log(data)
+        appendmovies(data)
+    }
+
+
+//deboucing--we bounce the function which os not required
+
+//main("a")-->settimeout(main,1000,'a')--id-->data
+//main("av")-->we have prev timeout id--clearit out--settimeout(main,1000,'av')--data
+
+    function debouncefunction(func,delay){
+     
+        if(id){
+          clearTimeout(id)
+      }
+    id=setTimeout(function(){
+        func()
+    },delay)
+    }
+</script>
