@@ -76,7 +76,7 @@
 
       let data =await res.json() // res.json colect the data , await will help to collect data from promises
 
-      //console.log(data)
+    console.log(data.Search)
 
       return data.Search   // the data ia returning 
       }
@@ -94,15 +94,14 @@
       movies.forEach(function(el){
        let dibba=document.createElement("div")
          dibba.setAttribute("id","dibba")
-        dibba.addEventListener("onClick",myclick(el))
+        dibba.addEventListener("click",function(){
+            myclick(el)
+        })
 
-         let img=document.createElement("img")
-         img.src=el.Poster
-         img.setAttribute("id","poster")
         let p=document.createElement("p")
         p.innerText=el.Title
         p.style.textAlign="center"
-        dibba.append(img,p)
+        dibba.append(p)
         document.getElementById("movies").append(dibba)
       })
 
@@ -127,7 +126,6 @@
 //main("av")-->we have prev timeout id--clearit out--settimeout(main,1000,'av')--data
 
     function debouncefunction(func,delay){
-     
         if(id){
           clearTimeout(id)
       }
@@ -138,6 +136,26 @@
 
 
     function myclick(ele){
-        console.log(ele)
+        document.getElementById("movies").innerHTML=null
+
+        let dibba=document.createElement("div")
+          dibba.setAttribute("id","dibba")
+
+        let img=document.createElement("img")
+         img.src=ele.Poster
+         img.setAttribute("id","poster")
+
+         let p1=document.createElement("p")
+        p1.innerText=ele.Title
+        p1.style.textAlign="center"
+
+         let p=document.createElement("p")
+        p.innerText=ele.Year
+        p.style.color="white"
+        p.style.textAlign="center"
+        dibba.append(img,p1,p)
+
+        document.getElementById("movies").append(dibba)
+
     }
 </script>
